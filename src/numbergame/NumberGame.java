@@ -19,31 +19,57 @@ import javafx.geometry.*;
 public class NumberGame {
 	private Scene previousScene;
 	private Stage primaryStage;
-	int min;
-	int max;
-	int answer;
-	private static final String defaultText = "Guess a number between 1 and 100 (inclusive)";	
+	private int guessesRemaining;
+	private int min;
+	private int max;
+	private int answer;
+	private Text header;
+	private Text text;
+	private static final String defaultText = "Guess a number between 1 and 100 (inclusive)";
+	private static final int defaultMin = 1;
+	private static final int defaultMax = 100;
+	private static final int defaultGuesses = 10;
 
 	public NumberGame(Stage primaryStage) {
 		this.primaryStage = primaryStage;
+		this.previousScene = primaryStage.getScene();
 	}
 	
 	public void endGame() {
 		primaryStage.setScene(previousScene);
 	}
 	
-	public void checkGuess(String guess, Text text) {
+	public void setText(String str) {
+		text.setText(str);
+	}
+	
+	public void restartButton(Button button) {
+		button.setText("Play Again");
+		button.setOnAction(new RestartEventHandler(this));
+	}
+	
+	public void checkGuess(String guess, Button button) {
 		int guessNum = Integer.parseInt(guess);
+		guessesRemaining--;
 		if (guessNum == answer) {
-			text.setText("Correct!");
+			header.setText("Congratulations!");
+			text.setText("Correct! (in " + (defaultGuesses - guessesRemaining) + "guesses");
+			restartButton(button);
+		}
+		else if (guessesRemaining == 0) {
+			header.setText("Game Over!");
+			text.setText("The answer was " + answer);
+			restartButton(button);
 		}
 		else if (guessNum < answer) {
 			text.setText("Guess higher!");
 			min = Math.max(min, guessNum);
+			button.setText("Enter Guess (" + guessesRemaining + " guesses remaining)");
 		}
 		else {
 			text.setText("Guess lower!");
 			max = Math.min(max, guessNum);
+			button.setText("Enter Guess (" + guessesRemaining + " guesses remaining)");
 		}
 	}
 	
@@ -52,34 +78,24 @@ public class NumberGame {
 	}
 	
 	public void begin() {
-		min = 1;
-		max = 100;
-		answer = (int)(Math.random() * 100) + 1;
-		Text header = new Text(defaultText);
-		Text text = new Text();
+		min = defaultMin;
+		max = defaultMax;
+		guessesRemaining = defaultGuesses;
+		answer = (int)(Math.random() * (defaultMax-defaultMin + 1)) + defaultMin;
+		header = new Text(defaultText);
+		text = new Text();
 		
 		TextField input = new TextField();
 		input.maxWidth(10);
 		
 		
 		Button button = new Button();
-		button.setText("Enter Guess");
-		button.setOnAction(new EventHandler<ActionEvent>() {
-			
-			@Override
-			public void handle(ActionEvent event) {
-				String guess = input.getText();
-				try {
-					checkGuess(guess, text);
-				}
-				catch (NumberFormatException error) {
-					text.setText("Guesses must be integers");
-				}
-			}
-		});
+		button.setText("Enter Guess (" + guessesRemaining + " guesses remaining)");
+		GuessEventHandler guessEvent = new GuessEventHandler(this, input, button);
+		button.setOnAction(guessEvent);
 		
 		Button quit = new Button("Quit");
-		button.setOnAction(new EventHandler<ActionEvent>() {
+		quit.setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
 			public void handle(ActionEvent event) {
