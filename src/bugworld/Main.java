@@ -3,7 +3,14 @@ package bugworld;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import javafx.stage.Stage;
+
 public class Main {
+	private Stage primaryStage;
+	
+	public Main(Stage primaryStage) {
+		this.primaryStage = primaryStage;
+	}
 
 	/* main method */
 	public static void main(String[] args) {
