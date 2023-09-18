@@ -3,6 +3,8 @@ package application;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import numbergame.*;
+
+
 import bugworld.*;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,12 +17,20 @@ import javafx.event.*;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.geometry.*;
+import javafx.scene.paint.Color;
 
 
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			BorderPane background = new BorderPane();
+			Pane controls = new Pane();
+			Pane main = new Pane();
+			
+			controls.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
+			main.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
+			
 			Text mainText = new Text("Select a game");
 			Text secondaryText = new Text();
 			Button numberGame = new Button("Play guessing game");
@@ -43,14 +53,21 @@ public class Main extends Application {
 				}
 			});
 			
-			VBox pane = new VBox();
-			pane.getChildren().add(mainText);
-			pane.getChildren().add(secondaryText);
-			pane.getChildren().add(numberGame);
-			pane.getChildren().add(bugWorld);
-			pane.setAlignment(Pos.CENTER);
+			VBox controlPane = new VBox();
+			controlPane.getChildren().add(numberGame);
+			controlPane.getChildren().add(bugWorld);
+			controlPane.setAlignment(Pos.TOP_LEFT);
+			controls.getChildren().add(controlPane);
 			
-			Scene scene = new Scene(pane);
+			VBox centrePane = new VBox();
+			controlPane.getChildren().add(mainText);
+			controlPane.getChildren().add(secondaryText);
+			main.getChildren().add(centrePane);
+			
+			background.setLeft(controls);
+			background.setCenter(main);
+			
+			Scene scene = new Scene(background);
 			primaryStage.setScene(scene);
 			
 			primaryStage.setWidth(600);
