@@ -36,34 +36,34 @@ public class Main extends Application {
 			Text mainText = new Text("Select a game");
 			mainText.setFont(new Font(25));
 			Text secondaryText = new Text();
-			Button numberGame = new Button("Play guessing game");
-			numberGame.setOnAction(new EventHandler<ActionEvent>() {
+			Button numberGameButton = new Button("Play guessing game");
+			numberGameButton.setOnAction(new EventHandler<ActionEvent>() {
 				
 				@Override
 				public void handle(ActionEvent event) {
-					NumberGame game = new NumberGame(primaryStage);
-					game.play();
+					NumberGame numberGame = new NumberGame(primaryStage);
+					numberGame.play();
 				}
 			});
 			
-			Button bugWorld = new Button("Look at a bug world");
-			bugWorld.setOnAction(new EventHandler<ActionEvent>() {
+			Button bugWorldButton = new Button("Look at a bug world");
+			bugWorldButton.setOnAction(new EventHandler<ActionEvent>() {
 				
 				@Override
 				public void handle(ActionEvent event) {
-					//bugworld.Main bugWorld = new bugworld.Main(primaryStage);
-					secondaryText.setText("Bug world has not been implemented yet");
+					BugWorldAnimation bugWorld = new BugWorldAnimation(primaryStage);
+					bugWorld.begin();
 				}
 			});
 			
 			VBox controlPane = new VBox();
-			controlPane.getChildren().add(numberGame);
-			controlPane.getChildren().add(bugWorld);
+			controlPane.getChildren().add(numberGameButton);
+			controlPane.getChildren().add(bugWorldButton);
 			controlPane.setAlignment(Pos.TOP_LEFT);
 			controls.getChildren().add(controlPane);
 			controlPane.setSpacing(5);
-			numberGame.setMaxWidth(Double.MAX_VALUE);
-			bugWorld.setMaxWidth(Double.MAX_VALUE);
+			numberGameButton.setMaxWidth(Double.MAX_VALUE);
+			bugWorldButton.setMaxWidth(Double.MAX_VALUE);
 			
 			VBox centrePane = new VBox();
 			centrePane.getChildren().add(mainText);
