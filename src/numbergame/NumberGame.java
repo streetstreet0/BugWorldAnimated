@@ -39,6 +39,8 @@ public class NumberGame {
 	
 	public void endGame() {
 		primaryStage.setScene(previousScene);
+		primaryStage.setWidth(primaryStage.getWidth());
+		primaryStage.setHeight(primaryStage.getHeight());
 	}
 	
 	public void setText(String str) {
@@ -56,6 +58,8 @@ public class NumberGame {
 		ArrayList<BackgroundImage> image = new ArrayList<BackgroundImage>();
 		image.add(new BackgroundImage(new Image(url), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, null));
 		pane.setBackground(new Background(fill, image));
+		primaryStage.setWidth(primaryStage.getWidth());
+		primaryStage.setHeight(primaryStage.getHeight());
 	}
 	
 	public void checkGuess(String guess, Button button) {
@@ -132,6 +136,8 @@ public class NumberGame {
 		
 		primaryStage.setTitle("NOBODY READS THIS ANYWAYS");
 		primaryStage.setScene(scene);
+		primaryStage.setWidth(primaryStage.getWidth());
+		primaryStage.setHeight(primaryStage.getHeight());
 	}
 
 }

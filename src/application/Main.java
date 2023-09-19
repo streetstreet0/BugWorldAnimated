@@ -22,6 +22,7 @@ import javafx.scene.paint.Color;
 
 
 public class Main extends Application {
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -74,6 +75,7 @@ public class Main extends Application {
 			
 			Scene scene = new Scene(background);
 			primaryStage.setScene(scene);
+			primaryStage.setTitle("Nkdajf");
 			
 			primaryStage.setWidth(600);
 			primaryStage.setHeight(600);
