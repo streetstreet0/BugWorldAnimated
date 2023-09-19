@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.Group;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.event.*;
 import javafx.geometry.Pos;
@@ -32,6 +33,7 @@ public class Main extends Application {
 			main.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
 			
 			Text mainText = new Text("Select a game");
+			mainText.setFont(new Font(25));
 			Text secondaryText = new Text();
 			Button numberGame = new Button("Play guessing game");
 			numberGame.setOnAction(new EventHandler<ActionEvent>() {
@@ -58,10 +60,13 @@ public class Main extends Application {
 			controlPane.getChildren().add(bugWorld);
 			controlPane.setAlignment(Pos.TOP_LEFT);
 			controls.getChildren().add(controlPane);
+			controlPane.setSpacing(5);
+			numberGame.setMaxWidth(Double.MAX_VALUE);
+			bugWorld.setMaxWidth(Double.MAX_VALUE);
 			
 			VBox centrePane = new VBox();
-			controlPane.getChildren().add(mainText);
-			controlPane.getChildren().add(secondaryText);
+			centrePane.getChildren().add(mainText);
+			centrePane.getChildren().add(secondaryText);
 			main.getChildren().add(centrePane);
 			
 			background.setLeft(controls);
