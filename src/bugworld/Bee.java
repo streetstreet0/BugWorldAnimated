@@ -31,7 +31,7 @@ public class Bee extends Bug {
 	@Override
 	public void eat(World world) {
 		for (int i=0; i<world.getPlantsSize(); i++) {
-			Plant plant = world.getPlantsIndex(i);
+			Plant plant = world.getPlantAtIndex(i);
 			if (plant.atPosition(this.getxPos(), this.getyPos())) {
 				this.gainEnergy(plant.getSize());
 				world.deletePlant(i);
@@ -53,7 +53,7 @@ public class Bee extends Bug {
 	public int smellFood(World world) {
 		DistanceStorer<Plant> distStore = new DistanceStorer<Plant>();
 		for (int i=0; i<world.getPlantsSize(); i++) {
-			Plant plant = world.getPlantsIndex(i);
+			Plant plant = world.getPlantAtIndex(i);
 			int distance = Math.abs(plant.getxPos() - this.getxPos()) + Math.abs(plant.getyPos() - this.getyPos());
 			distStore.addDistance(plant, distance);
 		}

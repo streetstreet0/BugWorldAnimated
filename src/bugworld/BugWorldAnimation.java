@@ -13,8 +13,8 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -44,11 +44,11 @@ public class BugWorldAnimation {
 	}
 	
 	public void generateWorld() {
-		Bug bug1 = new Fly("Fly", '*', 0, 0, 50, true);
+		//Bug bug1 = new Fly("Fly", '*', 0, 0, 50, true);
 		Bug bug2 = new Bee("Bee", '%', 40, 7, 50, 5);
 		Bug bug3 = new CarnivoreBug("Carnivore", '&', 33, 0, 50);
 		ArrayList<Bug> bugs = new ArrayList<Bug>();
-		bugs.add(bug1);
+		//bugs.add(bug1);
 		bugs.add(bug2);
 		bugs.add(bug3);
 		world = new World(bugs,10,8,55,50);
@@ -63,13 +63,13 @@ public class BugWorldAnimation {
 		
 		ArrayList<AnimatedEntity> entities = new ArrayList<AnimatedEntity>();
 		for (int i=0; i<world.getBugsSize(); i++) {
-			entities.add(new AnimatedEntity(world.getBugAtIndex(i), size, Color.RED));
+			entities.add(new AnimatedEntity(world, world.getBugAtIndex(i), size, Color.RED));
 		}
 		for (int i=0; i<world.getPlantsSize(); i++) {
-			entities.add(new AnimatedEntity(world.getPlantAtIndex(i), size, Color.GREEN));
+			entities.add(new AnimatedEntity(world, world.getPlantAtIndex(i), size, Color.GREEN));
 		}
 		for (int i=0; i<world.getObstaclesSize(); i++) {
-			entities.add(new AnimatedEntity(world.getObstacleAtIndex(i), size, Color.BROWN));
+			entities.add(new AnimatedEntity(world, world.getObstacleAtIndex(i), size, Color.BROWN));
 		}
 		Group animation = new Group();
 		for (AnimatedEntity entity : entities) {
@@ -82,6 +82,11 @@ public class BugWorldAnimation {
 				}
 			});
 		}
+		animation.maxWidth(rectWidth+1);
+		animation.minWidth(rectWidth+1);
+		animation.maxHeight(rectHeight+1);
+		animation.minHeight(rectHeight+1);
+
 		
 		Button button = new Button();
 		button.setText("Quit");
@@ -112,7 +117,7 @@ public class BugWorldAnimation {
 		primaryStage.setWidth(primaryStage.getWidth());
 		primaryStage.setHeight(primaryStage.getHeight());
 		
-		KeyFrame frame = new KeyFrame(Duration.millis(16), new WorldEventHandler(world));
+		KeyFrame frame = new KeyFrame(Duration.millis(100), new WorldEventHandler(world, entities));
 		
 		Timeline timeline = new Timeline();
 		timeline.setCycleCount(javafx.animation.Animation.INDEFINITE);

@@ -31,7 +31,7 @@ public class Wasp extends Bug {
 	@Override
 	public void eat(World world) {
 		for (int i=0; i<world.getBugsSize(); i++) {
-			Bug bug= world.getBugsIndex(i);
+			Bug bug= world.getBugAtIndex(i);
 			if (bug.atPosition(this.getxPos(), this.getyPos()) && this != bug) {
 				this.gainEnergy(bug.getEnergy() / 2);
 				world.deleteBug(i);
@@ -39,7 +39,7 @@ public class Wasp extends Bug {
 			}
 		}
 		for (int i=0; i<world.getPlantsSize(); i++) {
-			Plant plant = world.getPlantsIndex(i);
+			Plant plant = world.getPlantAtIndex(i);
 			if (plant.atPosition(this.getxPos(), this.getyPos())) {
 				this.gainEnergy(plant.getSize());
 				world.deletePlant(i);
@@ -60,14 +60,14 @@ public class Wasp extends Bug {
 	public int smellFood(World world) {
 		DistanceStorer<Entity> distStore = new DistanceStorer<Entity>();
 		for (int i=0; i<world.getBugsSize(); i++) {
-			Bug bug = world.getBugsIndex(i);
+			Bug bug = world.getBugAtIndex(i);
 			if (!bug.equals(this)) {
 				int distance = Math.abs(bug.getxPos() - this.getxPos()) + Math.abs(bug.getyPos() - this.getyPos());
 				distStore.addDistance(bug, distance);
 			}
 		}
 		for (int i=0; i<world.getPlantsSize(); i++) {
-			Plant plant = world.getPlantsIndex(i);
+			Plant plant = world.getPlantAtIndex(i);
 			int distance = Math.abs(plant.getxPos() - this.getxPos()) + Math.abs(plant.getyPos() - this.getyPos());
 			distStore.addDistance(plant, distance);
 		}
