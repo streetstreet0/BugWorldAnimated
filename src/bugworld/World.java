@@ -56,17 +56,23 @@ public class World {
 	public int getPlantsSize() {
 		return plants.size();
 	}
+	public int getObstaclesSize() {
+		return obstacles.size();
+	}
 	public int getWidth() {
 		return width;
 	}
 	public int getHeight() {
 		return height;
 	}
-	public Bug getBugsIndex(int index) {
+	public Bug getBugAtIndex(int index) {
 		return bugs.get(index);
 	}
-	public Plant getPlantsIndex(int index) {
+	public Plant getPlantAtIndex(int index) {
 		return plants.get(index);
+	}
+	public Obstacle getObstacleAtIndex(int index) {
+		return obstacles.get(index);
 	}
 	public ArrayList<int[]> getAllPositions() {
 		ArrayList<int[]> allPositions = new ArrayList<int[]>();
