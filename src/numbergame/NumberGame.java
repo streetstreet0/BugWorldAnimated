@@ -1,15 +1,16 @@
 package numbergame;
 
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.Group;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.event.*;
 import javafx.geometry.Pos;
@@ -19,6 +20,7 @@ import javafx.geometry.*;
 public class NumberGame {
 	private Scene previousScene;
 	private Stage primaryStage;
+	private VBox pane;
 	private int guessesRemaining;
 	private int min;
 	private int max;
@@ -48,15 +50,25 @@ public class NumberGame {
 		button.setOnAction(new RestartEventHandler(this));
 	}
 	
+	public void imageBackground(String url) {
+		ArrayList<BackgroundFill> fill = new ArrayList<BackgroundFill>();
+		fill.add(new BackgroundFill(Color.CHARTREUSE, null, null));
+		ArrayList<BackgroundImage> image = new ArrayList<BackgroundImage>();
+		image.add(new BackgroundImage(new Image(url), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, null));
+		pane.setBackground(new Background(fill, image));
+	}
+	
 	public void checkGuess(String guess, Button button) {
 		int guessNum = Integer.parseInt(guess);
 		guessesRemaining--;
 		if (guessNum == answer) {
+			imageBackground("https://www.asiaone.com/sites/default/files/original_images/Apr2021/20210401_harold_fb.jpg");
 			header.setText("Congratulations!");
-			text.setText("Correct! (in " + (defaultGuesses - guessesRemaining) + "guesses");
+			text.setText("Correct! (in " + (defaultGuesses - guessesRemaining) + " guesses)");
 			restartButton(button);
 		}
 		else if (guessesRemaining == 0) {
+			imageBackground("https://media.istockphoto.com/photos/laughing-man-pointing-at-you-picture-id525966115");
 			header.setText("Game Over!");
 			text.setText("The answer was " + answer);
 			restartButton(button);
@@ -83,10 +95,13 @@ public class NumberGame {
 		guessesRemaining = defaultGuesses;
 		answer = (int)(Math.random() * (defaultMax-defaultMin + 1)) + defaultMin;
 		header = new Text(defaultText);
+		header.setFont(new Font(25));
 		text = new Text();
+		text.setFont(new Font(18));
 		
 		TextField input = new TextField();
-		input.maxWidth(10);
+		input.setMaxWidth(150);
+		input.setPromptText("Enter Guess Here");
 		
 		
 		Button button = new Button();
@@ -103,7 +118,7 @@ public class NumberGame {
 			}
 		});
 		
-		VBox pane = new VBox();
+		pane = new VBox();
 		pane.getChildren().add(header);
 		pane.getChildren().add(text);
 		pane.getChildren().add(input);
@@ -111,7 +126,7 @@ public class NumberGame {
 		pane.getChildren().add(quit);
 		pane.setAlignment(Pos.CENTER);
 		pane.setBackground(new Background(new BackgroundFill(Color.AQUA, null, null)));
-		//pane.setBackground(new Background(new BackgroundImage(new Image("../images/laughing at.jpg"), null, null, null, null)));
+		pane.setSpacing(5);
 		
 		Scene scene = new Scene(pane);
 		
