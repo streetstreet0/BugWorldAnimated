@@ -1,5 +1,7 @@
 package bugworld;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -9,6 +11,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
 import java.util.*;
 
 public class BugWorldAnimation {
@@ -69,6 +73,17 @@ public class BugWorldAnimation {
 		primaryStage.setScene(scene);
 		primaryStage.setWidth(primaryStage.getWidth());
 		primaryStage.setHeight(primaryStage.getHeight());
+	}
+	
+	public void animateBugWorld(int frameTime) {
+		
+		
+		KeyFrame frame = new KeyFrame(Duration.millis(frameTime), new WorldEventHandler(world));
+		
+		Timeline timeline = new Timeline();
+		timeline.setCycleCount(javafx.animation.Animation.INDEFINITE);
+		timeline.getKeyFrames().add(frame);
+		timeline.play();
 	}
 
 }
