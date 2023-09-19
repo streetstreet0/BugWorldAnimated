@@ -1,6 +1,12 @@
 package bugworld;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import java.util.*;
@@ -8,10 +14,23 @@ import java.util.*;
 public class BugWorldAnimation {
 	private Stage primaryStage;
 	private Scene previousScene;
+	private static final int size = 10;
 	World world;
 	
 	public BugWorldAnimation(Stage primaryStage) {
 		this.primaryStage = primaryStage;
+		previousScene = primaryStage.getScene();
+	}
+	
+	public void endWorld() {
+		primaryStage.setScene(previousScene);
+		primaryStage.setWidth(primaryStage.getWidth());
+		primaryStage.setHeight(primaryStage.getHeight());
+	}
+	
+	public void begin() {
+		generateWorld();
+		drawWorld();
 	}
 	
 	public void generateWorld() {
@@ -22,13 +41,34 @@ public class BugWorldAnimation {
 		bugs.add(bug1);
 		bugs.add(bug2);
 		bugs.add(bug3);
-		world = new World(bugs,10,8,70,20);
+		world = new World(bugs,10,8,55,50);
 	}
 	
 	public void drawWorld() {
-		Rectangle rectangle = new Rectangle();
-		rectangle.setWidth(world.getWidth());
-		rectangle.setHeight(world.getHeight());
+		int rectWidth = size * world.getWidth();
+		int rectHeight = size * world.getHeight();
+		
+		Rectangle rect = new Rectangle(rectWidth+1, rectHeight+1, Color.WHITE);
+		rect.setStroke(Color.BLACK);
+		
+		Button button = new Button();
+		button.setText("quit");
+		button.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				endWorld();
+			}
+		});
+		
+		VBox pane = new VBox();
+		pane.getChildren().add(rect);
+		pane.setAlignment(Pos.CENTER);
+		
+		Scene scene = new Scene(pane);
+		primaryStage.setScene(scene);
+		primaryStage.setWidth(primaryStage.getWidth());
+		primaryStage.setHeight(primaryStage.getHeight());
 	}
 
 }
