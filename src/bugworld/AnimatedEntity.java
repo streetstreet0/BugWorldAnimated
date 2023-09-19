@@ -7,7 +7,7 @@ import javafx.scene.shape.Circle;
 
 public class AnimatedEntity extends Circle {
 	Entity entity;
-	float size; 
+	float size;
 	World world;
 
 	public AnimatedEntity(World world, Entity entity, float size) {

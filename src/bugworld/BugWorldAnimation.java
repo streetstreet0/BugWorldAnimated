@@ -58,9 +58,6 @@ public class BugWorldAnimation {
 		float rectWidth = size * world.getWidth();
 		float rectHeight = size * world.getHeight();
 		
-		Rectangle rect = new Rectangle(rectWidth+1, rectHeight+1, Color.WHITE);
-		rect.setStroke(Color.BLACK);
-		
 		ArrayList<AnimatedEntity> entities = new ArrayList<AnimatedEntity>();
 		for (int i=0; i<world.getBugsSize(); i++) {
 			entities.add(new AnimatedEntity(world, world.getBugAtIndex(i), size, Color.RED));
@@ -86,6 +83,7 @@ public class BugWorldAnimation {
 		animation.minWidth(rectWidth+1);
 		animation.maxHeight(rectHeight+1);
 		animation.minHeight(rectHeight+1);
+		animation.setAutoSizeChildren(false);
 
 		
 		Button button = new Button();
