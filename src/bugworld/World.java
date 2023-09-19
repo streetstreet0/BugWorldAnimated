@@ -125,6 +125,19 @@ public class World {
 		int[] randomLocation = availablePositions.get(randomLocationIndex);
 		plants.add(new Plant(size, randomLocation[0], randomLocation[1]));
 	}
+	/* checkers */
+	public boolean contains(Entity entity) {
+		if (entity instanceof Bug) {
+			return bugs.contains(entity);
+		}
+		else if (entity instanceof Plant) {
+			return plants.contains(entity);
+		}
+		else if (entity instanceof Obstacle) {
+			return obstacles.contains(entity);
+		}
+		return false;
+	}
 	
 	
 	

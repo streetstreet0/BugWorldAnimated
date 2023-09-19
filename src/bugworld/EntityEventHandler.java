@@ -3,16 +3,15 @@ package bugworld;
 import javafx.event.*;
 
 public class EntityEventHandler implements EventHandler<ActionEvent> {
-	private Entity entity;
+	private AnimatedEntity entity;
 	
-	public EntityEventHandler(Entity entity) {
+	public EntityEventHandler(AnimatedEntity entity) {
 		this.entity = entity;
 	}
 
 	@Override
-	public void handle(ActionEvent arg0) {
-		
-		
+	public void handle(ActionEvent event) {
+		entity.update();
 	}
 
 }
