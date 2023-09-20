@@ -7,6 +7,7 @@ public abstract class Bug extends Entity implements Comparable<Bug> {
 	private String name;
 	protected String species;
 	private int energy;
+	private boolean dead = false;
 
 	/* constructors */
 	/*//default constructor
@@ -39,12 +40,16 @@ public abstract class Bug extends Entity implements Comparable<Bug> {
 		this.name = name;
 		this.energy = energy;
 	}
+	public Bug(int xPos, int yPos, int energy) {
+		super(xPos, yPos);
+		this.energy = energy;
+	}
 
 	
 
 	/* getters */
 	public String getName() {
-		return name;
+		return this.species + ": " + this.getId();
 	}
 	public String getSpecies() {
 		return species;
@@ -62,6 +67,9 @@ public abstract class Bug extends Entity implements Comparable<Bug> {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public void die() {
+		this.dead = true;
+	}
 	/*public void setSpecies(String species) {
 		this.species = species;
 	}*/
@@ -75,6 +83,10 @@ public abstract class Bug extends Entity implements Comparable<Bug> {
 	}
 	public void loseEnergy(int loss) {
 		this.energy -= loss;
+	}
+	
+	public boolean isDead() {
+		return dead;
 	}
 	
 	
@@ -106,6 +118,19 @@ public abstract class Bug extends Entity implements Comparable<Bug> {
 			}
 		}*/
 		moveBug(direction);
+	}
+	
+	public void moveBug(World world) {
+		Direction direction = smellFood(world);
+		if (direction == Direction.STATIONARY) {
+			return;
+		}
+		else if (direction == Direction.RANDOM) {
+			moveBugRandom(world);
+		}
+		else {
+			moveBug(direction);
+		}
 	}
 	
 	public void moveBug(Direction direction) {

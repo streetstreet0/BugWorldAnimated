@@ -1,6 +1,7 @@
 package bugworld;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class World {
@@ -44,6 +45,17 @@ public class World {
 	public World(int width, int height) {
 		this.width = width;
 		this.height = height;
+	}
+	// fully random constructor
+	public World(int numBugs, int numPlants, int numObstacles, int width, int height) {
+		this.width = width;
+		this.height = height;
+		this.numPlants = numPlants;
+		bugs = new ArrayList<Bug>();
+		generateWorld(numObstacles);
+		for (int i=0; i<numBugs; i++) {
+			addRandomBug();
+		}
 	}
 	
 	
@@ -108,14 +120,40 @@ public class World {
 	public void deletePlant(int index) {
 		plants.remove(index);
 	}
-	public void deleteBug(int index) {
-		bugs.remove(index);
+	public void killBug(int index) {
+		bugs.get(index).die();
 	}
 	/* adders */
-	public void addRandomPlant() {
-		int size = (int)(1 + Math.random() * 9);
+	public void addRandomBug() {
+		int energy = (int)(Math.random() * 80);
 		int xPos = (int)(Math.random() * width);
 		int yPos = (int)(Math.random() * height);
+		while (entityInPosition(xPos, yPos) != null) {
+			xPos = (int)(Math.random() * width);
+			yPos = (int)(Math.random() * height);
+		}
+		double random = Math.random();
+		if (random < 0.15) {
+			bugs.add(new CarnivoreBug(xPos, yPos, energy));
+		}
+		else if (random < 0.35) {
+			bugs.add(new Wasp(xPos, yPos, energy));
+		}
+		else if (random < 0.6) {
+			bugs.add(new Fly(xPos, yPos, energy));
+		}
+		else {
+			bugs.add(new Bee(xPos, yPos, energy));
+		}
+	}
+	public void addRandomPlant() {
+		int size = (int)(1 + Math.random() * 29);
+		int xPos = (int)(Math.random() * width);
+		int yPos = (int)(Math.random() * height);
+		while (entityInPosition(xPos, yPos) != null) {
+			xPos = (int)(Math.random() * width);
+			yPos = (int)(Math.random() * height);
+		}
 		plants.add(new Plant(size, xPos, yPos));
 	}
 	public void addPlant() {
@@ -170,12 +208,17 @@ public class World {
 	
 	public void updateWorld() {
 		bugs.sort(null);
-		ArrayList<Bug> deadBugs = new ArrayList<Bug>();
+		HashSet<Bug> deadBugs = new HashSet<Bug>();
 		for (Bug bug : bugs) {
-			bug.moveBugRandom(this);
-			bug.eat(this);
-			if (bug.getEnergy() <= 0) {
+			if (bug.isDead()) {
 				deadBugs.add(bug);
+			}
+			else {
+				bug.moveBug(this);
+				bug.eat(this);
+				if (bug.getEnergy() <= 0) {
+					deadBugs.add(bug);
+				}
 			}
 		}
 		for (Bug bug: deadBugs) {

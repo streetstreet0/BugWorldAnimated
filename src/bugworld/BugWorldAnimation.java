@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -17,6 +18,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.image.ImageView;
 
 import java.util.*;
 
@@ -44,20 +46,17 @@ public class BugWorldAnimation {
 	}
 	
 	public void generateWorld() {
-		//Bug bug1 = new Fly("Fly", '*', 0, 0, 50, true);
-		Bug bug2 = new Bee("Bee", '%', 40, 7, 50, 5);
-		Bug bug3 = new CarnivoreBug("Carnivore", '&', 33, 0, 50);
-		ArrayList<Bug> bugs = new ArrayList<Bug>();
-		//bugs.add(bug1);
-		bugs.add(bug2);
-		bugs.add(bug3);
-		world = new World(bugs,10,8,55,50);
+		world = new World(25,30,8,55,50);
 	}
 	
 	public void drawWorld() {
 		float rectWidth = size * world.getWidth();
 		float rectHeight = size * world.getHeight();
 		
+		/*
+		 * Image urls
+		 * Fly: https://webstockreview.net/images/fly-clipart-4.png
+		 */
 		ArrayList<AnimatedEntity> entities = new ArrayList<AnimatedEntity>();
 		for (int i=0; i<world.getBugsSize(); i++) {
 			entities.add(new AnimatedEntity(world, world.getBugAtIndex(i), size, Color.RED));
@@ -84,7 +83,25 @@ public class BugWorldAnimation {
 		animation.maxHeight(rectHeight+1);
 		animation.minHeight(rectHeight+1);
 		animation.setAutoSizeChildren(false);
-
+		
+		for (int i=0; i<4; i++) {
+			ImageView corner = new ImageView("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/6a840049-1580-4152-9ec2-39f96c4a5a8b/d4y5rky-3edd8db4-4f42-432d-ac44-e169d5dbd598.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwic3ViIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsImF1ZCI6WyJ1cm46c2VydmljZTpmaWxlLmRvd25sb2FkIl0sIm9iaiI6W1t7InBhdGgiOiIvZi82YTg0MDA0OS0xNTgwLTQxNTItOWVjMi0zOWY5NmM0YTVhOGIvZDR5NXJreS0zZWRkOGRiNC00ZjQyLTQzMmQtYWM0NC1lMTY5ZDVkYmQ1OTgucG5nIn1dXX0.oLlz0FYqiHCb-uNvw3DsXdjeAn_bndHVE3-eYmr4BiE");
+			animation.getChildren().add(corner);
+			corner.setFitWidth(1);
+			corner.setFitHeight(1);
+			if (i % 2 == 0) {
+				corner.setX(0);
+			}
+			else {
+				corner.setX(rectWidth);
+			}
+			if (i < 2) {
+				corner.setY(0);
+			}
+			else {
+				corner.setY(rectHeight);
+			}
+		}
 		
 		Button button = new Button();
 		button.setText("Quit");
