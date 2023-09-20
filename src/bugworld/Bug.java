@@ -85,18 +85,19 @@ public abstract class Bug extends Entity implements Comparable<Bug> {
 		// generates a random direction
 		// each number 0-3 corresponds to a direction
 		// 0=up, 1=right, 2=down, 3=left
-		ArrayList<Integer> illegalDirections = getIllegalDirections(world);
+		ArrayList<Direction> illegalDirections = getIllegalDirections(world);
 		if (illegalDirections.size() == 4) {
 			return;
 		}
-		ArrayList<Integer> legalDirections = new ArrayList<Integer>();
-		for (int i=0; i<4; i++) {
-			if (!illegalDirections.contains(i)) {
-				legalDirections.add(i);
+		ArrayList<Direction> legalDirections = new ArrayList<Direction>();
+		Direction[] allDirections = {Direction.UP, Direction.LEFT, Direction.RIGHT, Direction.DOWN};
+		for (Direction direction : allDirections) {
+			if (!illegalDirections.contains(direction)) {
+				legalDirections.add(direction);
 			}
 		}
 		int directionIndex = (int)(Math.random()*legalDirections.size());
-		int direction = legalDirections.get(directionIndex);
+		Direction direction = legalDirections.get(directionIndex);
 		/*int gennedDirection = (int)(Math.random() * (4 - illegalDirections.size()));
 		int direction = gennedDirection;
 		for (int illegalDirection : illegalDirections) {
@@ -107,24 +108,18 @@ public abstract class Bug extends Entity implements Comparable<Bug> {
 		moveBug(direction);
 	}
 	
-	public void moveBug(int direction) {
-		// each number 0-3 corresponds to a direction
-		// 0=up, 1=right, 2=down, 3=left
+	public void moveBug(Direction direction) {
 		switch (direction) {
-			// 0 is up
-			case 0: 
+			case UP: 
 				this.setyPos(this.getyPos() - 1);
 				break;
-			// 1 is right
-			case 1: 
+			case RIGHT: 
 				this.setxPos(this.getxPos() + 1);
 				break;
-			// 2 is down
-			case 2: 
+			case DOWN: 
 				this.setyPos(this.getyPos() + 1);
 				break;
-			// 3 is left
-			case 3: 
+			case LEFT: 
 				this.setxPos(this.getxPos() - 1);
 				break;
 		}
@@ -142,26 +137,26 @@ public abstract class Bug extends Entity implements Comparable<Bug> {
 	public abstract void eat(World world);
 	
 	
-	public ArrayList<Integer> getIllegalDirections(World world) {
-		ArrayList<Integer> illegalDirections = new ArrayList<Integer>();
+	public ArrayList<Direction> getIllegalDirections(World world) {
+		ArrayList<Direction> illegalDirections = new ArrayList<Direction>();
 		//cannot move left
 		if (this.getxPos() == 0 || this.inedibleEntity(world.entityInPosition(getxPos()-1, getyPos())) ) {
-			illegalDirections.add(3);
+			illegalDirections.add(Direction.LEFT);
 		}
 		
 		//cannot move right
 		if (this.getxPos() >= world.getWidth()-1 || this.inedibleEntity(world.entityInPosition(getxPos()+1, getyPos())) ) {
-			illegalDirections.add(1);
+			illegalDirections.add(Direction.RIGHT);
 		}
 		
 		// cannot move up
 		if (this.getyPos() == 0 || this.inedibleEntity(world.entityInPosition(getxPos(), getyPos()-1)) ) {
-			illegalDirections.add(0);
+			illegalDirections.add(Direction.UP);
 		}
 		
 		// cannot move down
 		if (this.getyPos() >= world.getHeight()-1 || this.inedibleEntity(world.entityInPosition(getxPos(), getyPos()+1)) ) {
-			illegalDirections.add(2);
+			illegalDirections.add(Direction.DOWN);
 		}
 		
 		// note: takes into account bug being in world that is too small
@@ -192,7 +187,7 @@ public abstract class Bug extends Entity implements Comparable<Bug> {
 	
 	public abstract boolean inedibleEntity(Entity entity);
 	
-	public abstract int smellFood(World world);
+	public abstract Direction smellFood(World world);
 	
 	public int compareTo(Bug bug) {
 		int comparison = this.getEnergy() - bug.getEnergy();
