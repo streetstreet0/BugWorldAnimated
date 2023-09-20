@@ -12,6 +12,11 @@ public class Fly extends Bug {
 		this.species = "Fly";
 		this.flying = flying;
 	}
+	public Fly(int xPos, int yPos, int energy) {
+		super(xPos, yPos, energy);
+		this.species = "Fly";
+		this.flying = true;
+	}
 	/*public Fly() {
 		super();
 		flying = false;
@@ -29,11 +34,11 @@ public class Fly extends Bug {
 	
 	/* other methods */
 	@Override
-	public void moveBug(Direction direction) {
-		super.moveBug(direction);
+	public void moveBug(World world) {
+		super.moveBug(smellFood(world));
 		// can move twice when flying
 		if (flying) {
-			super.moveBug(direction);
+			super.moveBug(smellFood(world));
 		}
 		// if energy drops below 10, can no longer fly
 		if (this.getEnergy() < 10) {
@@ -76,8 +81,11 @@ public class Fly extends Bug {
 			int distance = Math.abs(plant.getxPos() - this.getxPos()) + Math.abs(plant.getyPos() - this.getyPos());
 			distStore.addDistance(plant, distance);
 		}
-		if (distStore.getMinDistance() > 8) {
+		if (distStore.getMinDistance() > 24) {
 			return Direction.RANDOM;
+		}
+		else if (distStore.getMinDistance() == 0) {
+			return Direction.STATIONARY;
 		}
 		
 		Plant closest = distStore.getClosest();

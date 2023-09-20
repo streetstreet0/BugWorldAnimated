@@ -2,13 +2,17 @@ package bugworld;
 
 public class Bee extends Bug {
 	/* class variables */
-	int wingSize ;
+	private int wingSize ;
 	
 	/* constructors */
 	public Bee(String name, char symbol, int xPos, int yPos, int energy, int wingSize) {
 		super(name, symbol, xPos, yPos, energy);
 		this.species = "Bee";
 		this.wingSize = wingSize;
+	}
+	public Bee(int xPos, int yPos, int energy) {
+		super(xPos, yPos, energy);
+		this.species = "Bee";
 	}
 	/*
 	public Bee(String name, String species, char symbol, int xPos, int yPos, int energy, int wingSize) {
@@ -58,7 +62,7 @@ public class Bee extends Bug {
 			distStore.addDistance(plant, distance);
 		}
 		
-		if (distStore.getMinDistance() > 6) {
+		if (distStore.getMinDistance() > 24) {
 			return Direction.RANDOM;
 		}
 		Plant closest = distStore.getClosest();

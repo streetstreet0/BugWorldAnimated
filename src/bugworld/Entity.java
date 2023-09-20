@@ -16,6 +16,12 @@ public abstract class Entity {
 		this.xPos = xPos;
 		this.yPos = yPos;
 	}
+	public Entity(int xPos, int yPos) {
+		this.id = nextId;
+		nextId++;
+		this.xPos = xPos;
+		this.yPos = yPos;
+	}
 	
 	/* getters */
 	public int getId() {

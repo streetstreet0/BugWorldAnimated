@@ -2,13 +2,18 @@ package bugworld;
 
 public class Wasp extends Bug {
 	/* class variables */
-	int wingSize ;
+	private int wingSize ;
 	
 	/* constructors */
 	public Wasp(String name, char symbol, int xPos, int yPos, int energy, int wingSize) {
 		super(name, symbol, xPos, yPos, energy);
 		this.species = "Wasp";
 		this.wingSize = wingSize;
+	}
+	public Wasp(int xPos, int yPos, int energy) {
+		super(xPos, yPos, energy);
+		this.species = "Wasp";
+		this.wingSize = 1;
 	}
 	/*
 	public Bee(String name, String species, char symbol, int xPos, int yPos, int energy, int wingSize) {
@@ -33,8 +38,8 @@ public class Wasp extends Bug {
 		for (int i=0; i<world.getBugsSize(); i++) {
 			Bug bug= world.getBugAtIndex(i);
 			if (bug.atPosition(this.getxPos(), this.getyPos()) && this != bug) {
-				this.gainEnergy(bug.getEnergy() / 2);
-				world.deleteBug(i);
+				this.gainEnergy(bug.getEnergy());
+				world.killBug(i);
 				return;
 			}
 		}
@@ -61,7 +66,7 @@ public class Wasp extends Bug {
 		DistanceStorer<Entity> distStore = new DistanceStorer<Entity>();
 		for (int i=0; i<world.getBugsSize(); i++) {
 			Bug bug = world.getBugAtIndex(i);
-			if (!bug.equals(this)) {
+			if (!bug.equals(this) && !(bug instanceof CarnivoreBug)) {
 				int distance = Math.abs(bug.getxPos() - this.getxPos()) + Math.abs(bug.getyPos() - this.getyPos());
 				distStore.addDistance(bug, distance);
 			}
@@ -72,7 +77,7 @@ public class Wasp extends Bug {
 			distStore.addDistance(plant, distance);
 		}
 		
-		if (distStore.getMinDistance() > 6) {
+		if (distStore.getMinDistance() > 24) {
 			return Direction.RANDOM;
 		}
 		

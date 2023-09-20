@@ -29,6 +29,9 @@ public class DistanceStorer<T> {
 	}
 	
 	public int getMinDistance() {
+		if (distanceList.size() == 0) {
+			return 1000000000;
+		}
 		int minDist = distanceList.get(0);
 		for (int i=1; i<distanceList.size(); i++) {
 			if (distanceList.get(i) < minDist) {

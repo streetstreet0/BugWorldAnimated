@@ -29,8 +29,8 @@ public class Plant extends Entity {
 	/* other methods */
 	public void grow(int growth) {
 		this.size += growth;
-		if (size > 9) {
-			size = 9;
+		if (size > 30) {
+			size = 30;
 		}
 	}
 	

@@ -6,6 +6,10 @@ public class CarnivoreBug extends Bug {
 		super(name, symbol, xPos, yPos, energy);
 		this.species = "Carnivore";
 	}
+	public CarnivoreBug(int xPos, int yPos, int energy) {
+		super(xPos, yPos, energy);
+		this.species = "Carnivore";
+	}
 	
 	/* other methods */
 	@Override
@@ -13,8 +17,8 @@ public class CarnivoreBug extends Bug {
 		for (int i=0; i<world.getBugsSize(); i++) {
 			Bug bug= world.getBugAtIndex(i);
 			if (bug.atPosition(this.getxPos(), this.getyPos()) && this != bug) {
-				this.gainEnergy(bug.getEnergy() / 2);
-				world.deleteBug(i);
+				this.gainEnergy(bug.getEnergy());
+				world.killBug(i);
 				return;
 			}
 		}
@@ -40,7 +44,7 @@ public class CarnivoreBug extends Bug {
 			}
 		}
 		
-		if (distStore.getMinDistance() > 6) {
+		if (distStore.getMinDistance() > 24) {
 			return Direction.RANDOM;
 		}
 		
