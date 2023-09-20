@@ -29,7 +29,7 @@ public class Fly extends Bug {
 	
 	/* other methods */
 	@Override
-	public void moveBug(int direction) {
+	public void moveBug(Direction direction) {
 		super.moveBug(direction);
 		// can move twice when flying
 		if (flying) {
@@ -69,7 +69,7 @@ public class Fly extends Bug {
 	@Override
 	// returns the direction that gets it closest to the closest plant 
 	// or -1 if it cannot smell anything
-	public int smellFood(World world) {
+	public Direction smellFood(World world) {
 		DistanceStorer<Plant> distStore = new DistanceStorer<Plant>();
 		for (int i=0; i<world.getPlantsSize(); i++) {
 			Plant plant = world.getPlantAtIndex(i);
@@ -77,36 +77,55 @@ public class Fly extends Bug {
 			distStore.addDistance(plant, distance);
 		}
 		if (distStore.getMinDistance() > 8) {
-			return -1;
+			return Direction.RANDOM;
 		}
 		
 		Plant closest = distStore.getClosest();
-		// check blocked positions
-		ArrayList<Integer> nonBlockedPositions = getBlockedAdjacentPositions(world);
-		// for tomorrow need to check each nonBlockedPosition
-		// return which ever results in least distance to the target
-		// if all positions blocked, return -1
-		
-		// in future could just replace with a pathfinding algorithm
-		// and just return the first direction in that path
-		
-		int xDirection;
-		if (closest.getxPos() > this.getxPos() ) {
-			xDirection = 1;
+		boolean closerX = (Math.abs(closest.getxPos() - this.getxPos()) >= Math.abs(closest.getyPos() - this.getyPos()) && closest.getxPos() - this.getxPos() != 0);
+		Direction direction;
+		// check the closest axis first
+		// if that direction is blocked, check the other axis
+		// if that is blocked, go with random
+		if (closerX) {
+			if (closest.getxPos() > this.getxPos()) {
+				direction = Direction.RIGHT;
+			}
+			else {
+				direction = Direction.LEFT;
+			}
+			
+			if (this.getIllegalDirections(world).contains(direction)) {	
+				if (closest.getyPos() > this.getyPos()) {
+					direction = Direction.DOWN;
+				}
+				else {
+					direction = Direction.UP;
+				}
+				if (this.getIllegalDirections(world).contains(direction)) {
+					direction = Direction.RANDOM;
+				}
+			}
 		}
 		else {
-			xDirection = 3;
+			if (closest.getyPos() > this.getyPos()) {
+				direction = Direction.DOWN;
+			}
+			else {
+				direction = Direction.UP;
+			}
+			
+			if (this.getIllegalDirections(world).contains(direction)) {	
+				if (closest.getxPos() > this.getxPos()) {
+					direction = Direction.RIGHT;
+				}
+				else {
+					direction = Direction.LEFT;
+				}
+				if (this.getIllegalDirections(world).contains(direction)) {
+					direction = Direction.RANDOM;
+				}
+			}
 		}
-		
-		int yDirection;
-		if (closest.getyPos() > this.getyPos()) {
-			yDirection = 0;
-		}
-		else {
-			yDirection = 2;
-		}
-		
-		boolean closerX = Math.abs(closest.getxPos() - this.getxPos()) >= Math.abs(closest.getyPos() - this.getyPos());
-		
+		return direction;
 	}
 }

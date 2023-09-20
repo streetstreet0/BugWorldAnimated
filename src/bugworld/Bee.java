@@ -50,7 +50,7 @@ public class Bee extends Bug {
 	
 	@Override
 	// returns the direction of the closest plant or -1 if it cannot smell anything
-	public int smellFood(World world) {
+	public Direction smellFood(World world) {
 		DistanceStorer<Plant> distStore = new DistanceStorer<Plant>();
 		for (int i=0; i<world.getPlantsSize(); i++) {
 			Plant plant = world.getPlantAtIndex(i);
@@ -59,25 +59,54 @@ public class Bee extends Bug {
 		}
 		
 		if (distStore.getMinDistance() > 6) {
-			return -1;
+			return Direction.RANDOM;
 		}
 		Plant closest = distStore.getClosest();
-		boolean closerX = Math.abs(closest.getxPos() - this.getxPos()) >= Math.abs(closest.getyPos() - this.getyPos());
+		boolean closerX = (Math.abs(closest.getxPos() - this.getxPos()) >= Math.abs(closest.getyPos() - this.getyPos()) && closest.getxPos() - this.getxPos() != 0);
+		Direction direction;
+		// check the closest axis first
+		// if that direction is blocked, check the other axis
+		// if that is blocked, go with random
 		if (closerX) {
 			if (closest.getxPos() > this.getxPos()) {
-				return 1;
+				direction = Direction.RIGHT;
 			}
 			else {
-				return 3;
+				direction = Direction.LEFT;
+			}
+			
+			if (this.getIllegalDirections(world).contains(direction)) {	
+				if (closest.getyPos() > this.getyPos()) {
+					direction = Direction.DOWN;
+				}
+				else {
+					direction = Direction.UP;
+				}
+				if (this.getIllegalDirections(world).contains(direction)) {
+					direction = Direction.RANDOM;
+				}
 			}
 		}
 		else {
 			if (closest.getyPos() > this.getyPos()) {
-				return 0;
+				direction = Direction.DOWN;
 			}
 			else {
-				return 2;
+				direction = Direction.UP;
+			}
+			
+			if (this.getIllegalDirections(world).contains(direction)) {	
+				if (closest.getxPos() > this.getxPos()) {
+					direction = Direction.RIGHT;
+				}
+				else {
+					direction = Direction.LEFT;
+				}
+				if (this.getIllegalDirections(world).contains(direction)) {
+					direction = Direction.RANDOM;
+				}
 			}
 		}
+		return direction;
 	}
 }
