@@ -49,7 +49,7 @@ public class Bee extends Bug {
 		if (entity == null) {
 			return false;
 		}
-		return !(entity instanceof Bug);
+		return !(entity instanceof Plant);
 	}
 	
 	@Override

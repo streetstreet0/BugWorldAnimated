@@ -6,14 +6,14 @@ import java.util.Scanner;
 
 public class World {
 	/* class variables */
-	ArrayList<Bug> bugs;
-	ArrayList<Plant> plants = new ArrayList<Plant>();
-	ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
+	private ArrayList<Bug> bugs;
+	private ArrayList<Plant> plants = new ArrayList<Plant>();
+	private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 	// bugs and plants must be between 0 and (height-1) or 0 and (width-1) for x and y positions
 	// i.e x=width is not valid and y=height is not valid
-	int height;
-	int width;
-	int numPlants;
+	private int height;
+	private int width;
+	private int numPlants;
 	//ArrayList<int[]> availablePositions = new ArrayList<int[]>();
 	//ArrayList<int[]> takenPositions = new ArrayList<int[]>();
 	
@@ -161,7 +161,8 @@ public class World {
 		ArrayList<int[]> availablePositions = getAvailablePositions();
 		int randomLocationIndex = (int)(Math.random() * availablePositions.size());
 		int[] randomLocation = availablePositions.get(randomLocationIndex);
-		plants.add(new Plant(size, randomLocation[0], randomLocation[1]));
+		Plant plant = new Plant(size, randomLocation[0], randomLocation[1]);
+		plants.add(plant);
 	}
 	/* checkers */
 	public boolean contains(Entity entity) {
@@ -349,8 +350,8 @@ public class World {
 	public void generatePlants() {
 		plants = new ArrayList<Plant>();
 		for (int i=0; i<numPlants; i++) {
-			//addRandomPlant();
-			addPlant();
+			addRandomPlant();
+			//addPlant();
 		}
 		/*for (Plant plant: plants) {
 			plant.print();

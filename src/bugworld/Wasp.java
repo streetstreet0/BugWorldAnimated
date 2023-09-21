@@ -58,7 +58,7 @@ public class Wasp extends Bug {
 		if (entity == null) {
 			return false;
 		}
-		return !(entity instanceof Plant || entity instanceof Bug);
+		return (!(entity instanceof Plant || entity instanceof Bug) || entity instanceof CarnivoreBug || entity instanceof Wasp);
 	}
 	
 	@Override
@@ -82,7 +82,7 @@ public class Wasp extends Bug {
 		}
 		
 		Entity closest = distStore.getClosest();
-		boolean closerX = (Math.abs(closest.getxPos() - this.getxPos()) >= Math.abs(closest.getyPos() - this.getyPos()) && closest.getxPos() - this.getxPos() != 0);
+		boolean closerX = (Math.abs(closest.getxPos() - this.getxPos()) >= Math.abs(closest.getyPos() - this.getyPos()) && closest.getxPos() != this.getxPos());
 		Direction direction;
 		// check the closest axis first
 		// if that direction is blocked, check the other axis

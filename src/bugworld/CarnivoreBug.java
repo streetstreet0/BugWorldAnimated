@@ -29,7 +29,7 @@ public class CarnivoreBug extends Bug {
 		if (entity == null) {
 			return false;
 		}
-		return !(entity instanceof Bug);
+		return (!(entity instanceof Bug) || entity instanceof CarnivoreBug);
 	}
 	
 	@Override
@@ -38,7 +38,7 @@ public class CarnivoreBug extends Bug {
 		DistanceStorer<Bug> distStore = new DistanceStorer<Bug>();
 		for (int i=0; i<world.getBugsSize(); i++) {
 			Bug bug = world.getBugAtIndex(i);
-			if (!bug.equals(this)) {
+			if (!bug.equals(this) && !inedibleEntity(bug)) {
 				int distance = Math.abs(bug.getxPos() - this.getxPos()) + Math.abs(bug.getyPos() - this.getyPos());
 				distStore.addDistance(bug, distance);
 			}
