@@ -3,19 +3,19 @@ package bugworld;
 import javafx.event.*;
 
 public class EntityEventHandler implements EventHandler<ActionEvent> {
-	private AnimatedEntity entity;
+	private AnimatedEntity animatedEntity;
 	private boolean shouldRemove = false;
 	
 	public EntityEventHandler(AnimatedEntity entity) {
-		this.entity = entity;
+		this.animatedEntity = entity;
 	}
 	
 	public Entity getEntity() {
-		return entity.getEntity();
+		return animatedEntity.getEntity();
 	}
 	
 	public AnimatedEntity getAnimatedEntity() {
-		return entity;
+		return animatedEntity;
 	}
 	
 	public boolean shouldRemove() {
@@ -24,7 +24,7 @@ public class EntityEventHandler implements EventHandler<ActionEvent> {
 
 	@Override
 	public void handle(ActionEvent event) {
-		shouldRemove = entity.update();
+		shouldRemove = animatedEntity.update();
 	}
 
 }
