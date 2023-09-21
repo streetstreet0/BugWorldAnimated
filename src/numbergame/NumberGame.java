@@ -1,6 +1,10 @@
 package numbergame;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.io.File;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -53,26 +57,32 @@ public class NumberGame {
 	}
 	
 	public void imageBackground(String url) {
-		ArrayList<BackgroundFill> fill = new ArrayList<BackgroundFill>();
-		fill.add(new BackgroundFill(Color.CHARTREUSE, null, null));
-		ArrayList<BackgroundImage> image = new ArrayList<BackgroundImage>();
-		image.add(new BackgroundImage(new Image(url), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, null));
-		pane.setBackground(new Background(fill, image));
-		primaryStage.setWidth(primaryStage.getWidth());
-		primaryStage.setHeight(primaryStage.getHeight());
+		try {
+			FileInputStream imageFile = new FileInputStream(new File(url));
+			ArrayList<BackgroundFill> fill = new ArrayList<BackgroundFill>();
+			fill.add(new BackgroundFill(Color.CHARTREUSE, null, null));
+			ArrayList<BackgroundImage> image = new ArrayList<BackgroundImage>();
+			image.add(new BackgroundImage(new Image(imageFile), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, null));
+			pane.setBackground(new Background(fill, image));
+			primaryStage.setWidth(primaryStage.getWidth());
+			primaryStage.setHeight(primaryStage.getHeight());
+		}
+		catch (FileNotFoundException error) {
+			
+		}
 	}
 	
 	public void checkGuess(String guess, Button button) {
 		int guessNum = Integer.parseInt(guess);
 		guessesRemaining--;
 		if (guessNum == answer) {
-			imageBackground("https://www.asiaone.com/sites/default/files/original_images/Apr2021/20210401_harold_fb.jpg");
+			imageBackground("images/victory screen.jpg");
 			header.setText("Congratulations!");
 			text.setText("Correct! (in " + (defaultGuesses - guessesRemaining) + " guesses)");
 			restartButton(button);
 		}
 		else if (guessesRemaining == 0) {
-			imageBackground("https://media.istockphoto.com/photos/laughing-man-pointing-at-you-picture-id525966115");
+			imageBackground("images/loss screen.jpg");
 			header.setText("Game Over!");
 			text.setText("The answer was " + answer);
 			restartButton(button);
@@ -94,6 +104,7 @@ public class NumberGame {
 	}
 	
 	public void begin() {
+		
 		min = defaultMin;
 		max = defaultMax;
 		guessesRemaining = defaultGuesses;
