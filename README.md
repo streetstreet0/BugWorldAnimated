@@ -1,3 +1,5 @@
+### Summary
+
 This was a project I did during my Masters of Software Development.   
 This project is a animated version of a basic simulation of a group of bugs. It also contains a basic guessing game.
 
